@@ -26,10 +26,15 @@ class flatrent
 			System.out.println("Room 201 is Booked");
 			
 		}
-		else
+		else if (roomid==3)
 
 		{
 			System.out.println("Room 301 is Booked");
+			
+		}
+		else
+		{
+			System.out.println("Wrong Input");
 			
 		}
 		
