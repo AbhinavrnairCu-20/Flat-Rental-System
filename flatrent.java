@@ -6,7 +6,7 @@ class flatrent
 	int people;
 	int roomid;
 	
-	flatrent(String name,String bhk,int people,int r1)
+	public flatrent(String name,String bhk,int people,int r1)
 	{
 			this.name=name;
 			this.bhk=bhk;
