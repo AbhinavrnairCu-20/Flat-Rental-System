@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;   
 import java.util.Scanner;
-import Allot.allotme;
 public class Allot 
 {
 static final int allotted=20;
