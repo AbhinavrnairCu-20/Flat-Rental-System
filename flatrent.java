@@ -1,358 +1,227 @@
-import java.util.*;
-import java.sql.Timestamp;    
-import java.util.Date; 
-import java.util.ArrayList;
-import java.util.List;   
-import java.util.Scanner;
-import Allot.allotme;
-public class Allot 
-{
-static final int allotted=20;
-static int total= 100;
-static void display() {
-System.out.println("Now Total Rooms Remaining = " + (total -(allotted +1)));
-}
-}
-class Rent {
+import java.util.Scanner; 
+import java.util.*;  
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;   
+import discount.calcDiscount;         // user package
 
-	int Rent;
-	int Water;
-	int Electricity;
-	Rent() {
-	}
-	Rent(int r, int w, int e) {
-		Rent = r;
-		Water = w;
-		Electricity = e;
-	}
-	void getDefinitTotal() {
-		System.out.println("Total Rent : " + (Rent + Water + Electricity) + "Rs");
-	}
-}
-class Room {
-  public String studyroom;
-  public int roomNo;
-  Room(String name, int number) {
-    this.studyroom = name;
-    this.roomNo = number;
-  }
-}
-class Makhana {
-  private final List < Room > rooms;
-  Makhana(List < Room > rooms) {
-    this.rooms = rooms;
-  }
-  public List < Room > getTotalRoomsInMakhana() {
-    return rooms;
-  }
-}
-class BasicCharge extends Rent {
-
-	double weight;
-	BasicCharge() {
-	}
-	BasicCharge(int r, int w, int e) {
-		super(r, w, e);
-	}
-}
-class  OwnerDetails 
+class InvalidException extends Exception //prg 9
 {
-    public void disp(String ak)
-    {
-	 System.out.println("---------------------------------------");
-         System.out.println("\t"+ak);
+    InvalidException(String s)
+    { super(s);
     }
-    public void disp(String co ,Long num)  
-    {
-         System.out.println(co);
-	 System.out.println("Contact Number:"+num);
-    }
-}
 
-abstract class mess{
-  public abstract void Numberofdays();
 }
-class food extends mess{
-   public void Numberofdays(){
-     System.out.println("Enter Number of Times a day :");  
-     Scanner sc=new Scanner(System.in);
-	 int times = sc.nextInt();
-	 int onemeal = 1800;
-	 int twomeal = 2000;
-	 int threemeal = 2100;
-	 System.out.println("Enter Number of Days :"+times); 
-	 if (times == 0)
-	 {
-		 System.out.println("No Mess");
-	 }
-	 if (times == 1) 
-	 {
-		 System.out.println("Amount is:" + onemeal);
-	 }
-	 else if (times == 2) 
-	 {
-		 System.out.println("Amount is:" + twomeal);
-	 }
-	 else if (times == 3)
-	 {
-		 System.out.println("Amount is:" + threemeal);
-	 }
-	 else
-	 {
-		 System.out.println("nothing");
-	 }
-  }
-}
-interface Tentantextra {
-  public void tentantinfo();
-interface GaurdianDetail {
-  public void gaurdianinfo();
-class Extrainfo implements Tentantextra, GaurdianDetail {
-  public void tentantinfo() {
-	  Scanner sc = new Scanner(System.in);
-	String mail;
-	String blood;
-    System.out.println("/t/t" + "Additional Information");
-	System.out.println("Mail ID :");
-	mail=sc.nextLine();
-	System.out.println("Blood Group :");
-	blood=sc.nextLine();
-  }
-  public void gaurdianinfo() {
-	Scanner sc = new Scanner(System.in);
-	String GaurdianName;
-	String Contactnum;
-	String relation;
-    System.out.println("/t" + "Gaurdian Contact");
-	System.out.println("Name");
-	GaurdianName=sc.nextLine();
-	System.out.println("Gaurdian Contact Number");
-	Contactnum=sc.nextLine();	
-	System.out.println("Relation");
-	relation=sc.nextLine();
-  }
-}
-}
-}
-class flatrent 
+abstract class discount																												
 {
-	static{
-System.out.println("**********************We Welcome You TO**********************");
-System.out.println(".......................MAKHANA TOWERS.......................");
-} 
+	abstract void offer();
+}
 
-   public int EmpID;
-   public int TIDNum;
-   public String EmpName;
-   public String TID;
-   public String TName;
-   
-   flatrent()
-   {
-       this.EmpID = 001;
-       this.EmpName = "James";
+interface flatdetails{           // Interface in prog9
+  void name();
+}
+
+public class flatrental extends employee implements Runnable  //prg 10 threads
+{  
+      List<Double> pricearray = new ArrayList<Double>();
+      List<String> list=new ArrayList<String>(); 
+      static double  price ;
+      protected String RecepName;
+      Scanner console = new Scanner(System.in);
+      int nop, age;
+      
+   flatrental(String username){
+      RecepName = username;
    }
-   flatrent(String TenantID, String TenantName , int TenantIDNum)
-   {
-       TID= TenantID ;
-       TName= TenantName ;
-       TIDNum = TenantIDNum ;
-   }
-   public int getEmpID() {
-       return EmpID;
-   }
-   public String getTID() {
-       return TID;
-   }
+  public void recep()
+{
+      int  nop, bhk;    
+      char choice;     
+      int pl[]= {1000,2000,3000,4000};
+      String n[]= {"1 BHK","2 BHK","3 BHK","4 BHK"};
+      Scanner console = new Scanner(System.in);
+
+      do
+      {
+            try {
+         // Get the value from the user.
+                  System.out.print("Enter Number of People: ");
+                  nop = console.nextInt();
+                  if(nop == 6){
+                        System.out.print("Enter age: ");  
+                        age = console.nextInt();
+                  }
+	            System.out.println("Enter BHK Type: ");
+	            bhk = console.nextInt();
+	            double p = pl[nop];
+	            price = price + (nop * p);
+	            list.add(n[nop]);
+	            pricearray.add(bhk*p);
+			} catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Array Index is Out of Bounds");
+                        System.exit(1);
+                        }    // prg exception
 	
-   public void setTID(String TID) {
-       this.TID = TID;
-   }
-   public String getEmpName() {
-       return EmpName;
-   }
-   public String getTName() {
-       return TName;
-   }
-   public void TName(String TName) {
-       this.TName = TName;
-   }
-   public int getTIDNum() {
-       return TIDNum;
-   }
-   public void TIDNum(int TIDNum) {
-       this.TIDNum = TIDNum;
-   }
+            System.out.print("Book Another Room?(Y for yes or N for no): ");
+            choice = console.next().charAt(0);
+       }
+      while ((choice == 'y') || (choice == 'Y'));
+     
+}
 
-   public static void main(String args[])
-   {
-	   
-       flatrent myobj = new flatrent();
-       System.out.println("Employee ID is: "+myobj.getEmpID());
-       System.out.println("Employee Name is: "+myobj.getEmpName());
-       System.out.println("------------------------------");
-       System.out.println("Allotted So Far = " + (Allot.allotted));
-       System.out.println("------------------------------");
-       Scanner sc= new Scanner(System.in);      
-       System.out.print("Enter Tenant ID Proof Submitted- ");
-	   String a= sc.nextLine();
-       System.out.print("Enter Tenant Name ");  
-       String b= sc.nextLine();  
-       System.out.print("Enter Tenant ID number number- ");
-       int c= sc.nextInt();  
-       flatrent myobj2 = new flatrent(a, b, c);
-       System.out.println("------------------------------");
-       System.out.println("Tenant ID Subumitted is is: "+myobj2.getTID());
-       System.out.println("Tenant Name: "+myobj2.getTName());
-       System.out.println("Tenant ID Numberis: "+myobj2.getTIDNum()); 
-       System.out.println("------------------------------");
-	   Extrainfo myObj4 = new Extrainfo();
-       myObj4.tentantinfo();
-       myObj4.gaurdianinfo();
-	   System.out.println("------------------------------");
-	   mess p = new food();
-	   p.Numberofdays();
-	   System.out.println("------------------------------");
-	   sharedPrinter printer = new sharedPrinter();
-	   alreadybookedThread alreadybookedThread = new alreadybookedThread(20, printer);
-	   alreadybookedThread.setName("Already Booked by New Students");
-	   facultyThread facultyThread = new facultyThread(20, printer);
-	   facultyThread.setName("Continued By Old Students:");
-	   alreadybookedThread.start();
-	   facultyThread.start();
-	   System.out.println("------------------------------");
-       Allot obb202 = new Allot();
-	   obb202.display();
-       System.out.println("------------------------------");
-	   BasicCharge mb1 = new BasicCharge(10, 10, 10);
-	   System.out.println("Monthly Rent " + mb1.Rent);
-	   System.out.println("Water Charge " + mb1.Water);
-	   System.out.println("Electricity Charge :" + mb1.Electricity);
-	   mb1.getDefinitTotal();
-       System.out.println("------------------------------");
-       String Sa = String.join("BILLED","BY");
-	   System.out.println(Sa);
-	   System.out.println("RECIPIONIST" +"  " +args[0]);
-       System.out.println("------------------------------");
-       Timestamp ts=new Timestamp(System.currentTimeMillis());  
-       Date date=ts;  
-       System.out.println("Billing Time :"+date);
-	   System.out.println("------------------------------");
-	   Room room1 = new Room("Dining Hall", 29 );
-	   Room room2 = new Room("Manager 1", 2);
-       Room room3 = new Room("Manager 2", 92);
-	   System.out.println("------------------------------");
-	   System.out.println("\t\t" + "FLAT INFO" );
-       List < Room > books = new ArrayList < Room > ();
-       books.add(room1);
-       books.add(room2);
-       books.add(room3);
-       Makhana Makhana = new Makhana(books);
-       List < Room > rooms = Makhana.getTotalRoomsInMakhana();
-	   for (Room room: rooms) {
-		   System.out.println("Location of  " + room.studyroom + " is: " + room.roomNo);
-		   }
-		   StringBuffer sb=new StringBuffer("HAVE A PLASENT STAY");  
-		   sb.append("   "+b);
-			System.out.println("You have been given Room 21");
-		   System.out.println(sb); 
-		   OwnerDetails obj = new OwnerDetails();
-		   obj.disp("Owner Details");
-		   obj.disp("Akshay Mohan",123456789L);
-   }
-}
-class alreadybookedThread extends Thread
-{
-int limit;
-sharedPrinter printer;
-public alreadybookedThread(int limit, sharedPrinter printer)
-{
-this.limit = limit;
-this.printer = printer;
-}
-@Override
-public void run() 
-{
-int AlreadyBooked = 1;        //First alreadybooked number is 1
-while (AlreadyBooked <= limit)
-{
-printer.printalreadybooked(AlreadyBooked);       //Calling printalreadybooked() method of SharedPrinter class
-AlreadyBooked = AlreadyBooked + 2;         //Incrementing to next alreadybooked number
-}
-}
-}
-class facultyThread extends Thread
-{
-int limit;
-sharedPrinter printer;
-public facultyThread(int limit, sharedPrinter printer)
-{
-this.limit = limit;
-this.printer = printer;
-}
-@Override
-public void run() 
-{
-int Faculty = 2;           //First faculty number is 2
-while (Faculty <= limit)
-{
-printer.printfaculty(Faculty);          //Calling printfaculty() method of SharedPrinter class
-Faculty = Faculty + 2;           //Incrementing to next faculty number
-}
-}
-}
-class sharedPrinter
-{
-boolean isalreadybookedPrinted = false;
+ 	private void details(){
+	int BranchId = 560029;
+	int RecepID = 1012;
+	}
 
-synchronized void printalreadybooked(int number)
-{
-while (isalreadybookedPrinted)
-{
-try
-{
-wait();
-} 
-catch (InterruptedException e)
-{
-e.printStackTrace();
+void generatebill(){
+                System.out.println("Bill is printing....Please hold.............");
+		System.out.println("--------------------------------------------");
+		System.out.println("Booked                          Price(Rs)");
+      		System.out.println("--------------------------------------------");
+     		for (int i = 0 ; i < list.size(); i++) {System.out.println( list.get(i)+"                                "+pricearray.get(i)) ;}
+		System.out.println("Total                              "+price);
+		
 }
-}
-System.out.println(Thread.currentThread().getName()+" : "+number);
-isalreadybookedPrinted = true;
-try
+
+final void offer()                                                                 
 {
-Thread.sleep(500);
-} 
-catch (InterruptedException e) 
-{
-e.printStackTrace();
+  double discountpercentage = 12.0;
+  calcDiscount dis =  new calcDiscount();   //prg 8 package
+  if(price >=350.00){
+  //double discountprice = price * (discountpercentage/100);
+  Double discountprice = dis.calculate(price, discountpercentage)  	; 
+  Double discountamt = price - discountprice;    
+  System.out.println("discount availed                   "+discountpercentage+"%");
+  System.out.println("Amount to pay                      "+discountamt);
+  }
+  
 }
-notify();
+
+public void ordervalid(Double pay) throws InvalidException {   //prg 9 Exception
+      if (pay == 0.0) {
+        throw new InvalidException("Not valid !!");
+      }
+    }
+
+public void agerestriction() throws InvalidException{
+            if (age <= 18 )
+            {
+                  throw new InvalidException("Minor Booking");
+            }
 }
-synchronized void printfaculty(int number)
+
+public void run()                                 //prg10 threads
 {
-while (! isalreadybookedPrinted)
-{
-try
-{
-wait();
+
+      try
+      {
+            for( int i = 0; i<=5 ; i++)
+            {
+            System.out.println("Makhana Towers: Your Stay our Happiness");
+            Thread.sleep(10000);
+            }
+      }catch(InterruptedException e)
+      {
+       System.out.println("my thread interrupted");
+      }
 }
-catch (InterruptedException e) 
+
+
+public static void main(String args[])
+{     
+      flatrental ob = new flatrental(args[0]);
+      outlet.Emp s1 = new outlet.Emp();
+      employee eobj = new employee(); 
+      Scanner sc = new Scanner (System.in);
+      StringBuffer custname = new StringBuffer("Customer : ");    
+      Thread thread = new Thread(ob);                                   //prg 10 threads
+      thread.start();
+      eobj.name();              
+      outlet obj[]= new outlet[1];
+      outlet.change();                                    
+      s1.show();
+     
+      obj[0]= new outlet(args[0], 230761);           
+      String st = args[0];
+     boolean ans = empname.contains(st.toLowerCase());     // prog5 String Class method String.toLowerCase()
+     if(ans)
+     {
+      obj[0].recep();
+      try {                                  // prg9 Exception
+            obj[0].ordervalid(price);
+          } catch (Exception m)
+          {
+            System.out.println(m);
+            System.exit(1);
+      }
+
+      try {                                  // prg9 Exception
+            obj[0].agerestriction();
+          } catch (Exception m)
+          {
+            System.out.println(m);
+            System.exit(1);
+      }
+      
+      System.out.println("Customer : ");
+
+      custname.append(sc.nextLine());          // prog5 append method for string buffer
+      obj[0].display("cash");
+      obj[0].generatebill();
+      obj[0].offer();                               // prog7 calling abstract method
+      System.out.println(custname);                 // prog5 printing appended string buffer
+     }
+     else{System.out.println("No employee");}
+     
+       
+}
+
+}
+
+class outlet extends flatrental{		       // Aggregation(Movierental can still exist without this outlet)
+static String Outletname = "Makhana Towers";                       
+static void change(){Outletname= "Tavarakare";}                 
+static { System.out.println("     Hello     ");}            
+int password;   					// declaring password in the class (prg6)                                            
+outlet(String username, int password){
+	super(username);                                // prg7 superkeyword
+	this.password = password;			// this keyword (prg6)
+}
+outlet(String username, int password, int employeeID)       
 {
-e.printStackTrace();
+	super(username);
+	this.password= password;			// this keyword (prg6)
+	int empID= employeeID;
 }
-}
-System.out.println(Thread.currentThread().getName()+" : "+number);
-isalreadybookedPrinted = false;
-try
+DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+LocalDateTime now = LocalDateTime.now();
+
+void display(){System.out.println(RecepName); 
+System.out.println(dtf.format(now));}
+
+void display(String mode)                                 
 {
-Thread.sleep(500);
-} 
-catch (InterruptedException e) 
+ System.out.println(Outletname+"\n"+ "Receptionist Name: " + RecepName); 
+ System.out.println(dtf.format(now));
+ System.out.println("Paid by :     "+ mode);
+}
+
+static class Emp{                                           
+    void show(){
+     System.out.println("Welcome to Makhana Towers.\nYour Stay Our Happiness.\nHave a good Stay!! ") ;
+	 System.out.println("***************************");
+     System.out.println(" ");
+               }
+                }
+}
+
+class employee implements storedetails         //prog8 class employee implements interface storedetails  
 {
-e.printStackTrace();
-}
-notify();
-}
+  static List<String> empname= new ArrayList<String>(3);
+  public void name(){
+  empname.add("james");
+  empname.add("alex");
+  empname.add("rajesh");
+     }
+
 }
